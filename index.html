@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message spécial</title>
+  <style>
+    :root {
+      --primary: #ffffff;       /* Texte blanc */
+      --secondary: #ff4d6d;     /* Couleur rose foncé pour boutons */
+      --background: #ffe6f0;    /* Fond général rose pâle */
+      --paper: #ffb6c1;         /* Lettre rose clair */
+    }
+
+    * { box-sizing: border-box; font-family: "Georgia", "Times New Roman", serif; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    .container { width: 100%; max-width: 520px; padding: 20px; }
+
+    /* PAGE D’ACCUEIL */
+    .home, .letter-card {
+      border-radius: 12px;
+      padding: 35px 30px;
+      text-align: center;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .home { background: var(--paper); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); }
+
+    .couple-photo {
+      width: 120px; height: 120px;
+      object-fit: cover; border-radius: 50%;
+      margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+
+    /* ENVELOPPE */
+    .envelope {
+      width: 220px; height: 140px;
+      margin: 0 auto 25px; position: relative; cursor: pointer;
+      perspective: 1200px;
+    }
+
+    .envelope-base {
+      width: 100%; height: 100%;
+      background: #f0c0d6; border-radius: 8px;
+      position: absolute; bottom: 0;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15); z-index: 2;
+    }
+
+    .envelope-flap {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #ff99b3;
+      clip-path: polygon(0 0, 50% 55%, 100% 0);
+      transform-origin: top; z-index: 3;
+      transition: transform 1s ease-in-out;
+    }
+
+    .letter-preview {
+      position: absolute; bottom: 10px; left: 10px;
+      width: calc(100% - 20px); height: 120px;
+      background: #ffe6f0; border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transform: translateY(50px);
+      transition: transform 1.5s ease, opacity 1.5s ease;
+      z-index: 1; display: flex; align-items: center; justify-content: center;
+      font-style: italic; color: var(--secondary); font-size: 14px;
+      opacity: 0;
+    }
+
+    /* Animation ouverture */
+    .envelope.open .envelope-flap { transform: rotateX(-150deg); }
+    .envelope.open .letter-preview { transform: translateY(-55px) scale(1.02); opacity: 1; }
+
+    .home h1 { margin: 20px 0 15px; font-size: 24px; color: var(--secondary); }
+    .home p { font-size: 15px; color: #fff; margin-bottom: 25px; }
+
+    .btn {
+      display: inline-block; padding: 12px 25px; font-size: 14px; letter-spacing: 1px;
+      text-transform: uppercase; color: #fff; background: var(--secondary);
+      border: none; border-radius: 30px; cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease; margin-top: 10px;
+    }
+    .btn:hover { background: #ff6680; transform: translateY(-2px); }
+
+    /* LETTRE */
+    .letter-card {
+      display: none;
+      background: var(--paper);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      color: var(--primary);
+    }
+    .letter-card h2 { margin-top: 0; margin-bottom: 18px; font-size: 22px; color: var(--primary); }
+    .letter-card p { font-size: 16px; line-height: 1.6; color: var(--primary); margin-bottom: 15px; }
+    .signature { margin-top: 25px; text-align: right; font-style: italic; color: var(--secondary); }
+
+    @keyframes fadeIn { 0% { opacity:0; transform:translateY(20px);} 60% {opacity:1; transform:translateY(-4px);} 100% {opacity:1; transform:translateY(0);} }
+
+    /* COEURS FLOTANTS */
+    .heart {
+      position: absolute;
+      font-size: 18px;
+      color: #ff4d6d;
+      animation: float 4s ease-in forwards;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      50% { transform: translateY(-80px) scale(1.2); opacity: 0.8; }
+      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
+
+    /* RESPONSIVE MOBILE */
+    @media (max-width: 400px) {
+      .envelope { width: 180px; height: 110px; }
+      .letter-preview { height: 100px; font-size: 13px; }
+      .couple-photo { width: 100px; height: 100px; }
+      .home h1 { font-size: 20px; }
+      .letter-card h2 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- PAGE D’ACCUEIL -->
+    <div class="home" id="home">
+      <img src="couple.jpg" alt="Photo du couple" class="couple-photo" />
+
+      <div class="envelope" id="envelope">
+        <div class="letter-preview">Pour toi, mon amour ❤️</div>
+        <div class="envelope-base"></div>
+        <div class="envelope-flap"></div>
+      </div>
+
+      <h1>Un message pour toi</h1>
+      <p>Clique sur l’enveloppe pour découvrir ta surprise 💌</p>
+
+      <button class="btn" id="openLetter">Lire la lettre</button>
+    </div>
+
+    <!-- LETTRE SURPRISE -->
+    <div class="letter-card" id="letter">
+      <h2>Theo</h2>
+      <p>Depuis que tu es entrée dans ma vie, chaque jour est plus doux et lumineux. ❤️</p>
+      <p>Ton sourire illumine mes journées et ton rire fait battre mon cœur plus fort. 🌹</p>
+      <p>Je voudrais partager avec toi des moments précieux, te chérir et te montrer tout mon amour.</p>
+      <p>Alors, accepterais‑tu de passer ce moment spécial avec moi et de me laisser te gâter comme tu le mérites ? 💌💖</p>
+      <div class="signature">— Carl</div>
+      <button class="btn" id="backHome">Retour</button>
+    </div>
+
+  </div>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const home = document.getElementById('home');
+    const letter = document.getElementById('letter');
+    const btn = document.getElementById('openLetter');
+    const backBtn = document.getElementById('backHome');
+
+    // Ouvrir l'enveloppe
+    envelope.addEventListener('click', () => {
+      envelope.classList.toggle('open');
+    });
+
+    // Fonction pour créer des coeurs flottants
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.fontSize = (14 + Math.random() * 20) + 'px';
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 4000);
+    }
+
+    // Afficher la lettre avec animation et cœurs
+    btn.addEventListener('click', () => {
+      envelope.classList.add('open');
+
+      // Créer des coeurs toutes les 200ms pendant 1.5s
+      let count = 0;
+      const heartInterval = setInterval(() => {
+        createHeart();
+        count++;
+        if (count > 7) clearInterval(heartInterval);
+      }, 200);
+
+      setTimeout(() => {
+        home.style.display = 'none';
+        letter.style.display = 'block';
+      }, 800);
+    });
+
+    // Bouton retour
+    backBtn.addEventListener('click', () => {
+      letter.style.display = 'none';
+      home.style.display = 'block';
+      envelope.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
